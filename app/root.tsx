@@ -29,5 +29,5 @@ export default function App() {
         <LiveReload />
       </body>
     </html>
-  );
+  )
 }

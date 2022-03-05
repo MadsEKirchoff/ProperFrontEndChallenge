@@ -11,6 +11,8 @@
     "start": "cross-env NODE_ENV=production remix-serve build"
   },
   "dependencies": {
+    "@nextui-org/react": "^1.0.2-beta.4",
+    "@prisma/client": "^3.10.0",
     "@remix-run/react": "^1.2.3",
     "@remix-run/serve": "^1.2.3",
     "cross-env": "^7.0.3",
@@ -24,6 +26,7 @@
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
     "eslint": "^8.9.0",
+    "prisma": "^3.10.0",
     "typescript": "^4.5.5"
   },
   "engines": {
