@@ -1,6 +1,4 @@
-import {Link, LoaderFunction, Outlet, useLoaderData} from "remix"
-import {createTheme} from "@nextui-org/react"
-import {redirect} from "remix"
+import {LoaderFunction, Outlet, redirect} from "remix"
 
 //Immediate redirect just to get a proper URL
 export const loader: LoaderFunction = async () => redirect(`/portfolio`)

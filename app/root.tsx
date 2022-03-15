@@ -8,6 +8,7 @@ import {
 } from "remix";
 import type { MetaFunction } from "remix";
 import {createTheme, NextUIProvider} from "@nextui-org/react"
+import {magenta} from 'kleur/colors'
 
 export const meta: MetaFunction = () => {
   return { title: "New Remix App" };
@@ -38,4 +39,9 @@ export default function App() {
 // This is a tenant system for developers, dark mode is default
 const darkTheme = createTheme({
   type: 'dark',
+  theme: {
+    colors: {
+        background: '$purple900',
+    }
+  }
 })
