@@ -1,19 +1,16 @@
-import Portfolio from "~/routes/Portfolio";
-import { createTheme, NextUIProvider } from "@nextui-org/react"
+import {Link, LoaderFunction, Outlet, useLoaderData} from "remix"
+import {createTheme} from "@nextui-org/react"
+import {redirect} from "remix"
+
+//Immediate redirect just to get a proper URL
+export const loader: LoaderFunction = async () => redirect(`/portfolio`)
 
 //Basic scaffolding. Index is the default route in a given folder in remix
-const Index = (): JSX.Element => {
+export default function Index() {
     return (
-        <NextUIProvider theme={darkTheme}>
-            <Portfolio />
-        </NextUIProvider>
-    );
+        <>
+            <Outlet/>
+        </>
+    )
 }
 
-// This is a tenant system for developers, dark mode is default
-const darkTheme = createTheme({
-    type: 'dark',
-})
-
-
-export default Index

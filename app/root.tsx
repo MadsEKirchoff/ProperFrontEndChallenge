@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
 } from "remix";
 import type { MetaFunction } from "remix";
+import {createTheme, NextUIProvider} from "@nextui-org/react"
 
 export const meta: MetaFunction = () => {
   return { title: "New Remix App" };
@@ -23,7 +24,9 @@ export default function App() {
         <title>Proper challenge</title>
       </head>
       <body>
-        <Outlet />
+        <NextUIProvider theme={darkTheme}>
+          <Outlet />
+        </NextUIProvider>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
@@ -31,3 +34,8 @@ export default function App() {
     </html>
   )
 }
+
+// This is a tenant system for developers, dark mode is default
+const darkTheme = createTheme({
+  type: 'dark',
+})
