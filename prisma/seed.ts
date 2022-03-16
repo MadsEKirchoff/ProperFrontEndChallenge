@@ -15,7 +15,7 @@ seed();
 function seedTenancies() {
     return [
         {
-            address: "Bogholder Allé 46A",
+            address: "Bogholder Allé 1, 2720 Vanløse",
             size: "78",
             rooms: "2",
             description: "Decent beginner apartment.",

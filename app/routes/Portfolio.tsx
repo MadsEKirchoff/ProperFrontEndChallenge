@@ -2,7 +2,7 @@ import type {LoaderFunction} from "remix"
 import {ActionFunction, useLoaderData} from "remix"
 import {db} from "~/utils/db.server"
 import type {Tenancy} from "@prisma/client"
-import {Button, Input, Text} from "@nextui-org/react"
+import {Button, Text} from "@nextui-org/react"
 import TenancyDetails from '~/components/TenancyDetails'
 import {useSubmit} from '@remix-run/react'
 
@@ -27,7 +27,9 @@ export default function Portfolio() {
             <Text h2>Tenancies</Text>
 
             {tenancies?.map(tenancy =>
+
                 <TenancyDetails key={tenancy.id} tenancy={tenancy}/>)}
+
         </>
     )
 }
