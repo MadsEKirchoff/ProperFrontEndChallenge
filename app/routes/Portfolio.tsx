@@ -3,8 +3,8 @@ import {ActionFunction, useLoaderData} from "remix"
 import {db} from "~/utils/db.server"
 import type {Tenancy} from "@prisma/client"
 import {Button, Text} from "@nextui-org/react"
-import EditableTenancy from '~/components/EditableTenancy'
-import {Form, useSubmit} from '@remix-run/react'
+import TenancyDetails from '~/components/TenancyDetails'
+import {useSubmit} from '@remix-run/react'
 
 /** TODO  **/
 export default function Portfolio() {
@@ -23,23 +23,33 @@ export default function Portfolio() {
                   css={{textGradient: '90deg, $green900 -20%, $green300 50%', textAlign: 'center'}}>
                 Portfolio
             </Text>
+            <Button onClick={createNew}>Add new tenancy</Button>
+            <Text h2>Tenancies</Text>
 
             {tenancies?.map(tenancy =>
-                <EditableTenancy key={tenancy.id} tenancy={tenancy}/>)}
+                <TenancyDetails key={tenancy.id} tenancy={tenancy}/>)}
 
-            <Text h2>Add new tenancy</Text>
-            <Button onClick={createNew}>Add new tenancy</Button>
         </>
     )
 }
 
 
-export let loader: LoaderFunction = async () => db.tenancy.findMany()
+export let loader: LoaderFunction = async () => db.tenancy.findMany({orderBy: [{createdAt: 'desc'}]})
 
-// Creat, Update and Delete backend in one
+// Create, Update and Delete backend in one. Slightly hacky way to support our "actually" one page SPA
 export const action: ActionFunction = async ({request}) => {
     const form = await request.formData()
+
+    const deleteTenancy = form.get("delete")
     const existingId = form.get("id")
+
+    if (deleteTenancy) {
+        if (typeof existingId === "string")
+            return await db.tenancy.delete({where: {id: existingId}})
+        else
+            throw new Error(`Form not submitted correctly.`)
+    }
+
     const address = form.get("address")
     const rooms = form.get("rooms")
     const size = form.get("size")
@@ -49,9 +59,8 @@ export const action: ActionFunction = async ({request}) => {
         typeof address !== "string" ||
         typeof rooms !== "string" ||
         typeof size !== "string"
-    ) {
+    )
         throw new Error(`Form not submitted correctly.`)
-    }
 
     const fields = {address, rooms, size, description: 'Not Implemented'}
 
