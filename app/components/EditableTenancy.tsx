@@ -20,14 +20,12 @@ export default function EditableTenancy({tenancy}: TenancyProps) {
         <Card color="primary">
             <Spacer y={1.5}/>
             <Form method="post" onChange={(e) => handleChange(e)}>
+
+                <Input name="id" value={tenancy?.id} type="hidden"/>
                 {/*Padding is set because the card already has padding, but the input lacks on top*/}
                 <Grid.Container gap={2} css={{padding: '10px 0px 0px 0px'}}>
                     <Grid xs={6}>
-                        <Input value={tenancy?.address} labelPlaceholder="Address"
-                               fullWidth
-                               bordered
-                               name="address"
-                        />
+                        <Input value={tenancy?.address} labelPlaceholder="Address" fullWidth bordered name="address"/>
                     </Grid>
                     <Grid>
                         <StandardInput value={tenancy?.rooms} labelPlaceholder="Rooms" name="rooms"
@@ -37,6 +35,7 @@ export default function EditableTenancy({tenancy}: TenancyProps) {
                         <StandardInput value={tenancy?.size} labelPlaceholder="Size (m2)" name="size"/>
                     </Grid>
                 </Grid.Container>
+
             </Form>
         </Card>
         <Spacer y={0.3}/>

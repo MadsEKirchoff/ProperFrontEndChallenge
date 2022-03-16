@@ -4,30 +4,31 @@ import {db} from "~/utils/db.server"
 import type {Tenancy} from "@prisma/client"
 import {Button, Text} from "@nextui-org/react"
 import EditableTenancy from '~/components/EditableTenancy'
+import {Form, useSubmit} from '@remix-run/react'
 
 /** TODO  **/
 export default function Portfolio() {
     // This is a remix hook that automatically loads data from serverside, aka the "loader" function below
     const tenancies = useLoaderData<Tenancy[]>()
+    // And this one is used when manually saving. Is not necessary when a submit on a form can be done
+    const submit = useSubmit()
+
+    function createNew() {
+        submit({address: '', rooms: '', size: ''}, {method: "post"})
+    }
+
     return (
         <>
             <Text h1 size={60} weight="bold"
                   css={{textGradient: '90deg, $green900 -20%, $green300 50%', textAlign: 'center'}}>
                 Portfolio
             </Text>
-            {tenancies?.map(tenancy => <EditableTenancy key={tenancy.id} tenancy={tenancy}/>)}
+
+            {tenancies?.map(tenancy =>
+                <EditableTenancy key={tenancy.id} tenancy={tenancy}/>)}
 
             <Text h2>Add new tenancy</Text>
-            <EditableTenancy/>
-            <Button onClick={() => tenancies.push({
-                id: '',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                address: '',
-                size: '',
-                rooms: '',
-                description: '',
-            })}>Save</Button>
+            <Button onClick={createNew}>Add new tenancy</Button>
         </>
     )
 }
@@ -35,8 +36,10 @@ export default function Portfolio() {
 
 export let loader: LoaderFunction = async () => db.tenancy.findMany()
 
+// Creat, Update and Delete backend in one
 export const action: ActionFunction = async ({request}) => {
     const form = await request.formData()
+    const existingId = form.get("id")
     const address = form.get("address")
     const rooms = form.get("rooms")
     const size = form.get("size")
@@ -50,10 +53,10 @@ export const action: ActionFunction = async ({request}) => {
         throw new Error(`Form not submitted correctly.`)
     }
 
-    const fields = {
-        address, rooms, size, description: 'Not Implemented'
-    }
+    const fields = {address, rooms, size, description: 'Not Implemented'}
 
-    const tenancy = await db.tenancy.create({data: fields})
-    return tenancy
+    if (typeof existingId === "string")
+        return await db.tenancy.update({where: {id: existingId}, data: fields})
+    else
+        return await db.tenancy.create({data: fields})
 }
