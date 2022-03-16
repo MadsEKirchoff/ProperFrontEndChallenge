@@ -1,14 +1,6 @@
-import {
-    Links,
-    LiveReload,
-    Meta,
-    Outlet,
-    Scripts,
-    ScrollRestoration,
-} from "remix"
 import type {MetaFunction} from "remix"
+import {Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration,} from "remix"
 import {Container, createTheme, NextUIProvider} from "@nextui-org/react"
-import {magenta} from 'kleur/colors'
 
 export const meta: MetaFunction = () => {
     return {title: "New Remix App"}
@@ -43,6 +35,8 @@ const darkTheme = createTheme({
     type: 'dark',
     theme: {
         colors: {
+            background: '$blue900',
+            primary: '$blue400',
         }
     }
 })
