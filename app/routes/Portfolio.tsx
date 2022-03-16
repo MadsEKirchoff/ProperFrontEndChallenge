@@ -1,10 +1,9 @@
 import type {LoaderFunction} from "remix"
-import {useLoaderData} from "remix"
+import {ActionFunction, useLoaderData} from "remix"
 import {db} from "~/utils/db.server"
 import type {Tenancy} from "@prisma/client"
-import {Button, Card, Grid, Input, Spacer, Text, Textarea} from "@nextui-org/react"
-import StandardInput from '~/components/StandardInput'
-
+import {Button, Text} from "@nextui-org/react"
+import EditableTenancy from '~/components/EditableTenancy'
 
 /** TODO  **/
 export default function Portfolio() {
@@ -14,37 +13,47 @@ export default function Portfolio() {
         <>
             <Text h1 size={60} weight="bold"
                   css={{textGradient: '90deg, $green900 -20%, $green300 50%', textAlign: 'center'}}>
-                Tenancies
+                Portfolio
             </Text>
-            {tenancies?.map(tenancy =>
-                <>
-                    <Card color="primary">
-                        <Spacer y={1.5}/>
-                        <form method="post">
-                            {/*Padding is set because the card already has padding, but the input lacks on top*/}
-                            <Grid.Container gap={2} css={{padding: '10px 0px 0px 0px'}}>
-                                <Grid xs={6}>
-                                    <Input value={tenancy.address} labelPlaceholder="Address"
-                                           fullWidth
-                                           bordered
-                                    />
-                                </Grid>
-                                <Grid>
-                                    <StandardInput value={tenancy.rooms} labelPlaceholder="Rooms"/>
-                                </Grid>
-                                <Grid>
-                                    <StandardInput value={tenancy.size} labelPlaceholder="Size (m2)"/>
-                                </Grid>
-                            </Grid.Container>
-                        </form>
-                    </Card>
-                    <Spacer y={0.3}/>
-                </>
-            )}
-            <Button>Add Tenancy</Button>
+            {tenancies?.map(tenancy => <EditableTenancy key={tenancy.id} tenancy={tenancy}/>)}
+
+            <Text h2>Add new tenancy</Text>
+            <EditableTenancy/>
+            <Button onClick={() => tenancies.push({
+                id: '',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                address: '',
+                size: '',
+                rooms: '',
+                description: '',
+            })}>Save</Button>
         </>
     )
 }
 
 
 export let loader: LoaderFunction = async () => db.tenancy.findMany()
+
+export const action: ActionFunction = async ({request}) => {
+    const form = await request.formData()
+    const address = form.get("address")
+    const rooms = form.get("rooms")
+    const size = form.get("size")
+
+    // we do this type check to be extra sure and to make TypeScript happy
+    if (
+        typeof address !== "string" ||
+        typeof rooms !== "string" ||
+        typeof size !== "string"
+    ) {
+        throw new Error(`Form not submitted correctly.`)
+    }
+
+    const fields = {
+        address, rooms, size, description: 'Not Implemented'
+    }
+
+    const tenancy = await db.tenancy.create({data: fields})
+    return tenancy
+}
