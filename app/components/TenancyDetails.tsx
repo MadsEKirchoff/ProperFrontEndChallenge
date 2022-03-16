@@ -12,7 +12,7 @@ interface DataforsyningenAddress {
     adressebetegnelse: string
 }
 
-/* */
+/** An editable and deletable tenancy. **/
 export default function TenancyDetails({tenancy}: TenancyProps) {
     // This approach doesn't scale well and should handled differently if there were more fields
     const [address, setAddress] = useState(tenancy.address)

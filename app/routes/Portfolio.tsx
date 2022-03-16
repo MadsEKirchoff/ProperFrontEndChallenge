@@ -6,7 +6,7 @@ import {Button, Text} from "@nextui-org/react"
 import TenancyDetails from '~/components/TenancyDetails'
 import {useSubmit} from '@remix-run/react'
 
-/** TODO  **/
+/** Shows all the customers tenancies, e.g. rentable houses, apartments etc. Tenancies can also be CRUDed from here **/
 export default function Portfolio() {
     // This is a remix hook that automatically loads data from serverside, aka the "loader" function below
     const tenancies = useLoaderData<Tenancy[]>()
