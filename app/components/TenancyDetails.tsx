@@ -71,7 +71,7 @@ export default function TenancyDetails({tenancy}: TenancyProps) {
                                onBlur={persistUpdatedTenancy}/>
                     </Grid>
                     <Grid>
-                        <Button onClick={e => deleteTenancy(e)} color="error">
+                        <Button type="button" onClick={e => deleteTenancy(e)} color="error">
                             Delete
                         </Button>
                     </Grid>
