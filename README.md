@@ -1,5 +1,7 @@
 # Tenancy App POC
 
+The app is live and demoable at [fly.io](https://crimson-voice-4148.fly.dev/).
+
 ## Development
 
 For first time set up, run `npm install`
